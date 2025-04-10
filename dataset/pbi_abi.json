@@ -1,0 +1,48 @@
+{
+	"name": "pbi_abi",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PbiApi",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"lsp_workspace_id": {
+					"value": "@dataset().dp_workspace_id",
+					"type": "Expression"
+				},
+				"lsp_model_id": {
+					"value": "@dataset().dp_model_id",
+					"type": "Expression"
+				},
+				"lsp_spn_client_id": {
+					"value": "@dataset().dp_spn_client_id",
+					"type": "Expression"
+				},
+				"lsp_pbi_tenant_id": {
+					"value": "@dataset().dp_pbi_tenant_id",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"dp_model_id": {
+				"type": "string"
+			},
+			"dp_workspace_id": {
+				"type": "string"
+			},
+			"dp_spn_client_id": {
+				"type": "string"
+			},
+			"dp_pbi_tenant_id": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": "executeQueries"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

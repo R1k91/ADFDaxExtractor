@@ -1,0 +1,315 @@
+{
+	"name": "df-pbi",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get SPN Client Id from AKV",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 5,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": true,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": {
+						"value": "@concat(pipeline().parameters.pp_kv_dns,'secrets/',pipeline().parameters.pp_kv_secret_name_spn_client_id,pipeline().parameters.pp_kv_api_version)",
+						"type": "Expression"
+					},
+					"body": {
+						"simple": "body"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get SPN Secret from AKV",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 5,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": true,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": {
+						"value": "@concat(pipeline().parameters.pp_kv_dns,'secrets/',pipeline().parameters.pp_kv_secret_name_spn_secret,pipeline().parameters.pp_kv_api_version)",
+						"type": "Expression"
+					},
+					"body": {
+						"simple": "body"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get Entra Token",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Get SPN Secret from AKV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get SPN Client Id from AKV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Power BI Tenant Id from AKV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 5,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": true,
+					"secureInput": true
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					"url": {
+						"value": "@concat('https://login.microsoftonline.com/',activity('Get Power BI Tenant Id from AKV').output.value,'/oauth2/token')",
+						"type": "Expression"
+					},
+					"body": {
+						"value": "@concat('grant_type=client_credentials&resource=https://analysis.windows.net/powerbi/api&client_id=',activity('Get SPN Client Id from AKV').output.value,'&client_secret=',encodeUriComponent(activity('Get SPN Secret from AKV').output.value))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Get Power BI Tenant Id from AKV",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 5,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": true,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": {
+						"value": "@concat(pipeline().parameters.pp_kv_dns,'secrets/',pipeline().parameters.pp_kv_secret_name_pbi_tenant_id,pipeline().parameters.pp_kv_api_version)",
+						"type": "Expression"
+					},
+					"body": {
+						"simple": "body"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get Workspace Id from AKV",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 5,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": true,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": {
+						"value": "@concat(pipeline().parameters.pp_kv_dns,'secrets/',pipeline().parameters.pp_kv_secret_name_workspace_id,pipeline().parameters.pp_kv_api_version)",
+						"type": "Expression"
+					},
+					"body": {
+						"simple": "body"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get Model Id AKV",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 5,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": true,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": {
+						"value": "@concat(pipeline().parameters.pp_kv_dns,'secrets/',pipeline().parameters.pp_kv_secret_name_model_id,pipeline().parameters.pp_kv_api_version)",
+						"type": "Expression"
+					},
+					"body": {
+						"simple": "body"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Get Workspace Id from AKV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Entra Token",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Model Id AKV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "POST",
+						"requestBody": {
+							"value": "@concat('{', \n    '\"queries\":[{\"query\":\"', \n    pipeline().parameters.pp_dax_query,\n    '\"}]',\n'}') ",
+							"type": "Expression"
+						},
+						"additionalHeaders": {
+							"Content-Type": "application/json"
+						},
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "pbi_abi",
+						"type": "DatasetReference",
+						"parameters": {
+							"dp_model_id": {
+								"value": "@activity('Get Model Id AKV').output.value",
+								"type": "Expression"
+							},
+							"dp_workspace_id": {
+								"value": "@activity('Get Workspace Id from AKV').output.value",
+								"type": "Expression"
+							},
+							"dp_spn_client_id": {
+								"value": "@activity('Get SPN Client Id from AKV').output.value",
+								"type": "Expression"
+							},
+							"dp_pbi_tenant_id": {
+								"value": "@activity('Get Power BI Tenant Id from AKV').output.value",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"pp_kv_dns": {
+				"type": "string",
+				"defaultValue": "https://kv-df-pbi.vault.azure.net/"
+			},
+			"pp_kv_secret_name_spn_client_id": {
+				"type": "string",
+				"defaultValue": "spn-client-id"
+			},
+			"pp_kv_secret_name_pbi_tenant_id": {
+				"type": "string",
+				"defaultValue": "pbi-tenant-id"
+			},
+			"pp_kv_secret_name_spn_secret": {
+				"type": "string",
+				"defaultValue": "spn-secret"
+			},
+			"pp_kv_secret_name_workspace_id": {
+				"type": "string",
+				"defaultValue": "workspace-id"
+			},
+			"pp_kv_secret_name_model_id": {
+				"type": "string",
+				"defaultValue": "model-id"
+			},
+			"pp_dax_query": {
+				"type": "string",
+				"defaultValue": "EVALUATE SELECTCOLUMNS(QRV, \\\"QRV[MU_material]\\\", QRV[MU_material], \\\"QRV[QRV]\\\", QRV[QRV])"
+			},
+			"pp_kv_api_version": {
+				"type": "string",
+				"defaultValue": "/?api-version=7.4"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-04-10T12:36:46Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

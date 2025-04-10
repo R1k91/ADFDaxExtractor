@@ -1,0 +1,39 @@
+{
+	"name": "PbiApi",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"parameters": {
+			"lsp_workspace_id": {
+				"type": "string"
+			},
+			"lsp_model_id": {
+				"type": "string"
+			},
+			"lsp_spn_client_id": {
+				"type": "string"
+			},
+			"lsp_pbi_tenant_id": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "@{concat('https://api.powerbi.com/v1.0/myorg', \n    '/groups/', \n    linkedService().lsp_workspace_id, \n    '  /datasets/', \n    linkedService().lsp_model_id)\n}",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "AadServicePrincipal",
+			"servicePrincipalId": "@{linkedService().lsp_spn_client_id}",
+			"servicePrincipalKey": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault1",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "spn-secret"
+			},
+			"servicePrincipalCredentialType": "ServicePrincipalKey",
+			"tenant": "@{linkedService().lsp_pbi_tenant_id}",
+			"aadResourceId": "https://analysis.windows.net/powerbi/api"
+		}
+	}
+}

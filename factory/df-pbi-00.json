@@ -1,0 +1,9 @@
+{
+	"name": "df-pbi-00",
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "e845cbc8-e87d-4579-8524-89ebef4d59ac",
+		"tenantId": "3def9555-f6cd-4e97-a115-cfcb50d38090"
+	}
+}
