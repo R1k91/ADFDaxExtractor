@@ -184,7 +184,7 @@
 				}
 			},
 			{
-				"name": "Copy data1",
+				"name": "Save JSON Response",
 				"type": "Copy",
 				"dependsOn": [
 					{
