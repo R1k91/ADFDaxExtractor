@@ -5,12 +5,20 @@
 			"referenceName": "dfpbi",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"ds_container_name": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"container": "cnt01"
+				"container": {
+					"value": "@dataset().ds_container_name",
+					"type": "Expression"
+				}
 			}
 		},
 		"schema": {}

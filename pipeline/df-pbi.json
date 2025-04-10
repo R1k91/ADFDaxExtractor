@@ -157,7 +157,7 @@
 				}
 			},
 			{
-				"name": "Get Model Id AKV",
+				"name": "Get Model Id from AKV",
 				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
@@ -200,7 +200,19 @@
 						]
 					},
 					{
-						"activity": "Get Model Id AKV",
+						"activity": "Get Model Id from AKV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Storage Endpoint from AKV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Storage Container Name from AKV",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -248,7 +260,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"dp_model_id": {
-								"value": "@activity('Get Model Id AKV').output.value",
+								"value": "@activity('Get Model Id from AKV').output.value",
 								"type": "Expression"
 							},
 							"dp_workspace_id": {
@@ -269,9 +281,69 @@
 				"outputs": [
 					{
 						"referenceName": "Json",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"ds_container_name": {
+								"value": "@activity('Get Storage Container Name from AKV').output",
+								"type": "Expression"
+							}
+						}
 					}
 				]
+			},
+			{
+				"name": "Get Storage Endpoint from AKV",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 5,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": true,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": {
+						"value": "@concat(pipeline().parameters.pp_kv_dns,'secrets/',pipeline().parameters.pp_kv_secret_name_storage_endpoint,pipeline().parameters.pp_kv_api_version)",
+						"type": "Expression"
+					},
+					"body": {
+						"simple": "body"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get Storage Container Name from AKV",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 5,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": true,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": {
+						"value": "@concat(pipeline().parameters.pp_kv_dns,'secrets/',pipeline().parameters.pp_kv_secret_name_storage_container_name,pipeline().parameters.pp_kv_api_version)",
+						"type": "Expression"
+					},
+					"body": {
+						"simple": "body"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -306,6 +378,14 @@
 			"pp_kv_api_version": {
 				"type": "string",
 				"defaultValue": "/?api-version=7.4"
+			},
+			"pp_kv_secret_name_storage_endpoint": {
+				"type": "string",
+				"defaultValue": "storage-endpoint"
+			},
+			"pp_kv_secret_name_storage_container_name": {
+				"type": "string",
+				"defaultValue": "storage-container-name"
 			}
 		},
 		"annotations": [],
