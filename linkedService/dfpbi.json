@@ -9,7 +9,7 @@
 		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
-			"serviceEndpoint": "@{linkedService().lsp_storage_account_endpoint}",
+			"serviceEndpoint": "@{linkedService().lsp_storage_endpoint}",
 			"accountKind": "StorageV2"
 		}
 	},
