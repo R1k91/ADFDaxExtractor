@@ -1,12 +1,17 @@
 {
 	"name": "dfpbi",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
+		"parameters": {
+			"lsp_storage_account_endpoint": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
-			"serviceEndpoint": "https://dfpbi.blob.core.windows.net/",
+			"serviceEndpoint": "@{linkedService().lsp_storage_account_endpoint}",
 			"accountKind": "StorageV2"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
