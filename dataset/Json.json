@@ -3,10 +3,19 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "dfpbi",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"lsp_storage_endpoint": {
+					"value": "@dataset().ds_storage_endpoint",
+					"type": "Expression"
+				}
+			}
 		},
 		"parameters": {
-			"ds_container_name": {
+			"ds_storage_container_name": {
+				"type": "string"
+			},
+			"ds_storage_endpoint": {
 				"type": "string"
 			}
 		},
@@ -16,7 +25,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"container": {
-					"value": "@dataset().ds_container_name",
+					"value": "@dataset().ds_storage_container_name",
 					"type": "Expression"
 				}
 			}

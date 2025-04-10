@@ -283,8 +283,12 @@
 						"referenceName": "Json",
 						"type": "DatasetReference",
 						"parameters": {
-							"ds_container_name": {
+							"ds_storage_container_name": {
 								"value": "@activity('Get Storage Container Name from AKV').output",
+								"type": "Expression"
+							},
+							"ds_storage_endpoint": {
+								"value": "@activity('Get Storage Endpoint from AKV').output",
 								"type": "Expression"
 							}
 						}
