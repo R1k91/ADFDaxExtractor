@@ -2,7 +2,7 @@
 	"name": "dfpbi",
 	"properties": {
 		"parameters": {
-			"lsp_storage_account_endpoint": {
+			"lsp_storage_endpoint": {
 				"type": "string"
 			}
 		},
