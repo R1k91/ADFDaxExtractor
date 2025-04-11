@@ -38,3 +38,19 @@ No secrets are saved inside Azure Data Factory, all the sensitive information ar
 | model-id              | Model ID                                                   |
 | storage-endpoint      | Storage Endpoint                                           |
 | storage-container-name| Storage Container Name                                     |
+
+## Pipelin Parameters
+This project is based on single pipeline that accepts a set of parameters to interact with Key Vault, Storage Account and Power BI.
+
+| Parameter Name                          | Description                                                                 |
+|-----------------------------------------|-----------------------------------------------------------------------------|
+| pp_kv_dns                               | Key Vault DNS URL                                                          |
+| pp_kv_secret_name_spn_client_id         | Secret name for SPN Client ID                                              |
+| pp_kv_secret_name_pbi_tenant_id         | Secret name for Power BI Tenant ID                                         |
+| pp_kv_secret_name_spn_secret            | Secret name for SPN Secret                                                 |
+| pp_kv_secret_name_workspace_id          | Secret name for Workspace ID                                               |
+| pp_kv_secret_name_model_id              | Secret name for Model ID                                                   |
+| pp_dax_query                            | DAX query to be executed                                                   |
+| pp_kv_api_version                       | API version for Key Vault                                                  |
+| pp_kv_secret_name_storage_endpoint      | Secret name for Storage Endpoint                                           |
+| pp_kv_secret_name_storage_container_name| Secret name for Storage Container Name                                     |****
