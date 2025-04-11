@@ -14,3 +14,27 @@ This project is reusable and ideal whenever you need to extract data from publis
 
 ![image](https://github.com/user-attachments/assets/3deff02d-e7c2-429f-a7b4-80eac22b1032)
 
+## Prerequisites
+In order to leverage this project you need the following resources:
+
+- Azure Subscription
+- Azure Resource Group
+- Azure Key Vault
+- Azure Data Factory
+- Azure Storage Account
+- Power BI Workspace
+- Power BI Semantic Model
+- Microsoft Entra App
+
+## Azure Key Vault Secrets
+No secrets are saved inside Azure Data Factory, all the sensitive information are saved inside Azure Key Vault and retrived via APIs by ADF.
+
+| Parameter Name                          | Description                              |
+|-----------------------------------------|------------------------------------------|
+| spn-client-id         | SPN Client ID                                              |
+| pbi-tenant-id         | Power BI Tenant ID                                         |
+| spn-secret            | SPN Secret                                                 |
+| workspace-id          | Workspace ID                                               |
+| model-id              | Model ID                                                   |
+| storage-endpoint      | Storage Endpoint                                           |
+| storage-container-name| Storage Container Name                                     |
