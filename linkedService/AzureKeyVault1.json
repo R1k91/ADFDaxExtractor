@@ -5,7 +5,7 @@
 		"annotations": [],
 		"type": "AzureKeyVault",
 		"typeProperties": {
-			"baseUrl": "https://kv-df-pbi.vault.azure.net/"
+			"baseUrl": "<redacted>"
 		}
 	}
 }
