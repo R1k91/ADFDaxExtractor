@@ -377,7 +377,7 @@
 			},
 			"pp_dax_query": {
 				"type": "string",
-				"defaultValue": "EVALUATE SELECTCOLUMNS(QRV, \\\"QRV[MU_material]\\\", QRV[MU_material], \\\"QRV[QRV]\\\", QRV[QRV])"
+				"defaultValue": "EVALUATE SELECTCOLUMNS(MyTable, \\\"MyTable[val1]\\\", MyTable[val2], \\\"MyTable[val1]\\\", MyTable[val2])"
 			},
 			"pp_kv_api_version": {
 				"type": "string",
