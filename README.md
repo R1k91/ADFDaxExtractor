@@ -12,4 +12,5 @@ The connection is established using a service principal (Azure Entra App) and al
 
 This project is reusable and ideal whenever you need to extract data from published semantic models without having to reinvent the wheel.
 
-![image](https://github.com/user-attachments/assets/e4ca6bd7-58d0-4d50-bf28-55baa2461d3f)
+![image](https://github.com/user-attachments/assets/3deff02d-e7c2-429f-a7b4-80eac22b1032)
+
