@@ -39,7 +39,7 @@ No secrets are saved inside Azure Data Factory, all the sensitive information ar
 | storage-endpoint      | Storage Endpoint                                           |
 | storage-container-name| Storage Container Name                                     |
 
-## Pipelin Parameters
+## Pipeline Parameters
 This project is based on single pipeline that accepts a set of parameters to interact with Key Vault, Storage Account and Power BI.
 
 | Parameter Name                          | Description                                                                 |
