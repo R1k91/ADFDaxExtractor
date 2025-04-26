@@ -6,7 +6,7 @@ With the rise of Power BI, this approach has accelerated. Many organizations now
 
 In environments without Microsoft Fabric, this means you need to extract data from a semantic model and feed it into the next stage of your data pipeline.
 
-This Azure Data Factory (ADF) project leverages the Power BI executeDaxQueries API to run DAX queries on published Power BI semantic models and write the resulting JSON output to a storage account for further processing.
+This Azure Data Factory (ADF) project leverages the Power BI executeQueries API to run DAX queries on published Power BI semantic models and write the resulting JSON output to a storage account for further processing.
 
 The connection is established using a service principal (Azure Entra App) and all secrets (such as the Power BI tenant ID, semantic model ID, app secret, etc.) are securely stored in Azure Key Vault, outside of ADF itself.
 
